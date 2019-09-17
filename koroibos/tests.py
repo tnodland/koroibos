@@ -61,11 +61,11 @@ class AllOlymipiansTest(BaseTest):
         olympian_3.save()
 
         response = self.client.get('/api/v1/olympians')
-
+        # import code; code.interact(local=dict(globals(), **locals()))
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.data['olympians']), 3)
-        self.assertEqual(response.data['olympians'][0]['name'], olympian_1.name)
-        self.assertEqual(response.data['olympians'][0]['age'], olympian_1.age)
-        self.assertEqual(response.data['olympians'][0]['sex'], olympian_1.sex)
-        self.assertEqual(response.data['olympians'][0]['total_medals_won'], 0)
-        self.assertEqual(response.data['olympians'][1]['total_medals_won'], 1)
+        self.assertEqual(len(response.data), 3)
+        self.assertEqual(response.data[0]['name'], olympian_1.name)
+        self.assertEqual(response.data[0]['age'], olympian_1.age)
+        self.assertEqual(response.data[0]['sport'], sport.name)
+        self.assertEqual(response.data[0]['total_medals_won'], 0)
+        self.assertEqual(response.data[1]['total_medals_won'], 1)
