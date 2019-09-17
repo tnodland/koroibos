@@ -61,7 +61,7 @@ class AllOlymipiansTest(BaseTest):
         olympian_3.save()
 
         response = self.client.get('/api/v1/olympians')
-        # import code; code.interact(local=dict(globals(), **locals()))
+
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 3)
         self.assertEqual(response.data[0]['name'], olympian_1.name)
@@ -69,3 +69,50 @@ class AllOlymipiansTest(BaseTest):
         self.assertEqual(response.data[0]['sport'], sport.name)
         self.assertEqual(response.data[0]['total_medals_won'], 0)
         self.assertEqual(response.data[1]['total_medals_won'], 1)
+
+class YoungestOlympian(BaseTest):
+    def test_it_can_get_the_youngest_olympian(self):
+        sport = Sport(
+            name='Sportsball'
+        )
+        sport.save()
+
+        event = Event(
+            name='Big Sport Blast'
+        )
+        event.save()
+
+        olympian_1 = Olympian(
+            name='Sport Man',
+            sex='M',
+            age=25,
+            height=150,
+            weight=200,
+            team='America',
+            games='2016 Summer',
+            event=event,
+            sport=sport
+        )
+        olympian_1.save()
+
+        olympian_2 = Olympian(
+            name='Sport Woman',
+            sex='F',
+            age=27,
+            height=150,
+            weight=200,
+            team='Brazil',
+            games='2016 Summer',
+            event=event,
+            sport=sport,
+            medal='Gold'
+        )
+        olympian_2.save()
+
+        response = self.client.get('/api/v1/olympians?age=youngest')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data['name'], olympian_1.name)
+        self.assertEqual(response.data['age'], olympian_1.age)
+        self.assertEqual(response.data['sport'], sport.name)
+        self.assertEqual(response.data['total_medals_won'], 0)
