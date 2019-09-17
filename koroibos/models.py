@@ -18,3 +18,9 @@ class Olympian(models.Model):
     event = models.ForeignKey('Event', on_delete=models.PROTECT)
     sport = models.ForeignKey('Sport', on_delete=models.PROTECT)
     medal = models.CharField(null=True, max_length=255)
+
+    def total_medals(self):
+        if self.medal == None:
+            return 0
+        else:
+            return 1
