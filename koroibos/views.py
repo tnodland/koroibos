@@ -24,5 +24,15 @@ class ListOlympiansView(generics.ListAPIView):
                     'total_medals_won': youngest.total_medals()
                 }
                 return Response(olympian)
+            else:
+                oldest = Olympian.objects.filter().annotate(Min('age')).order_by('age').reverse()[0]
+                olympian = {
+                    'name': oldest.name,
+                    'team': oldest.team,
+                    'age': oldest.age,
+                    'sport': oldest.sport.name,
+                    'total_medals_won': oldest.total_medals()
+                }
+                return Response(olympian)
         else:
             return self.list(request, *args, **kwargs)
