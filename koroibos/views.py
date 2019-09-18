@@ -64,4 +64,32 @@ class ListEventsView(generics.ListAPIView):
     serializer_class = SportSerializer
     queryset = Sport.objects.all()
 
-    # def get(self, request):
+class ListMedalistsView(APIView):
+    def get(self, request, **kwargs):
+        event_id = kwargs['event_id']
+        event = Event.objects.filter(id=event_id)[0]
+        medalists = Olympian.objects.filter(event=event).exclude(medal=None)
+        data = {
+            "event": event.name,
+            "medalists": [
+                {
+                    "name": medalists[0].name,
+                    "team": medalists[0].team,
+                    "age": medalists[0].age,
+                    "medal": medalists[0].medal
+                },
+                {
+                    "name": medalists[1].name,
+                    "team": medalists[1].team,
+                    "age": medalists[1].age,
+                    "medal": medalists[1].medal
+                },
+                {
+                    "name": medalists[2].name,
+                    "team": medalists[2].team,
+                    "age": medalists[2].age,
+                    "medal": medalists[2].medal
+                },
+            ]
+        }
+        return Response(data)
