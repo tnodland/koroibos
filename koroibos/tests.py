@@ -162,3 +162,76 @@ class OlympianAge(BaseTest):
         self.assertEqual(response.data['age'], olympian_2.age)
         self.assertEqual(response.data['sport'], sport.name)
         self.assertEqual(response.data['total_medals_won'], 1)
+
+class OlympicStats(BaseTest):
+    def test_it_can_get_olympic_stats(self):
+        sport = Sport(
+            name='Sportsball'
+        )
+        sport.save()
+
+        event = Event(
+            name='Big Sport Blast'
+        )
+
+        olympian_1 = Olympian(
+            name='Sport Man',
+            sex='M',
+            age=20,
+            height=150,
+            weight=200,
+            team='America',
+            games='2016 Summer',
+            event=event,
+            sport=sport
+        )
+        olympian_1.save()
+
+        olympian_2 = Olympian(
+            name='Sport Man 2',
+            sex='M',
+            age=20,
+            height=150,
+            weight=100,
+            team='America',
+            games='2016 Summer',
+            event=event,
+            sport=sport
+        )
+        olympian_2.save()
+
+        olympian_3 = Olympian(
+            name='Sport Woman',
+            sex='F',
+            age=20,
+            height=150,
+            weight=200,
+            team='Brazil',
+            games='2016 Summer',
+            event=event,
+            sport=sport,
+            medal='Gold'
+        )
+        olympian_3.save()
+
+        olympian_4 = Olympian(
+            name='Sport Woman',
+            sex='F',
+            age=40,
+            height=150,
+            weight=150,
+            team='Brazil',
+            games='2016 Summer',
+            event=event,
+            sport=sport,
+            medal='Gold'
+        )
+        olympian_4.save()
+
+        response = self.client.get('api/v1/olympian_stats')
+                self.assertEqual(response.status_code, 200)
+                self.assertEqual(response.data['olympian_stats']['totl_competing_olympians'], 4)
+                self.assertEqual(response.data['olympian_stats']['average_weight']['unit'], 'kg')
+                self.assertEqual(response.data['olympian_stats']['average_weight']['male_olympians'], 150)
+                self.assertEqual(response.data['olympian_stats']['average_weight']['female_olympians'], 175)
+                self.assertEqual(response.data['olympian_stats']['average_age'], 25)
