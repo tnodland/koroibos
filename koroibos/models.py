@@ -5,6 +5,7 @@ class Sport(models.Model):
 
 class Event(models.Model):
     name = models.CharField(max_length=255)
+    sport = models.ForeignKey('Sport', on_delete=models.PROTECT)
 
 
 class Olympian(models.Model):
