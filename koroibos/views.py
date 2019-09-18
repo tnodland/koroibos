@@ -6,6 +6,7 @@ from .models import Sport
 from .models import Event
 from .models import Olympian
 from .serializers import OlympianSerializer
+from .serializers import SportSerializer
 from django.db.models import Min
 from django.db.models import Avg
 
@@ -58,3 +59,9 @@ class ListOlympianStatsView(APIView):
         }
 
         return Response(data)
+
+class ListEventsView(generics.ListAPIView):
+    serializer_class = SportSerializer
+    queryset = Sport.objects.all()
+
+    # def get(self, request):

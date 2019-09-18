@@ -5,8 +5,10 @@ class Sport(models.Model):
 
 class Event(models.Model):
     name = models.CharField(max_length=255)
-    sport = models.ForeignKey('Sport', on_delete=models.PROTECT)
+    sport = models.ForeignKey(Sport, related_name='events', on_delete=models.PROTECT)
 
+    def __str__(self):
+        return '%s' % (self.name)
 
 class Olympian(models.Model):
     name = models.CharField(max_length=255)

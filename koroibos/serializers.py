@@ -9,3 +9,10 @@ class OlympianSerializer(serializers.ModelSerializer):
     class Meta:
         model = Olympian
         fields = ('id', 'name', 'team', 'age', 'sport', 'total_medals_won')
+
+class SportSerializer(serializers.ModelSerializer):
+    events = serializers.StringRelatedField(many=True)
+    sport = serializers.CharField(source='name')
+    class Meta:
+        model = Sport
+        fields = ['sport', 'events']
