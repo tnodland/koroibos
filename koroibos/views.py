@@ -7,6 +7,7 @@ from .models import Event
 from .models import Olympian
 from .serializers import OlympianSerializer
 from django.db.models import Min
+from django.db.models import Avg
 
 class ListOlympiansView(generics.ListAPIView):
     serializer_class = OlympianSerializer
@@ -36,3 +37,24 @@ class ListOlympiansView(generics.ListAPIView):
                 return Response(olympian)
         else:
             return self.list(request, *args, **kwargs)
+
+class ListOlympianStatsView(APIView):
+    def get(self, request):
+        total = Olympian.objects.count()
+        average_age = Olympian.objects.all().aggregate(Avg('age'))['age__avg']
+        average_male_weight = Olympian.objects.all().filter(sex='M').aggregate(Avg('weight'))['weight__avg']
+        average_female_weight = Olympian.objects.all().filter(sex='F').aggregate(Avg('weight'))['weight__avg']
+        # import code; code.interact(local=dict(globals(), **locals()))
+        data = {
+            'olympian_stats': {
+                'total_competing_olympians': total,
+                'average_weight': {
+                    'unit': 'kg',
+                    'male_olympians': average_male_weight,
+                    'female_olympians': average_female_weight
+                },
+                'average_age': average_age
+            }
+        }
+
+        return Response(data)
