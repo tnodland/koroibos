@@ -173,6 +173,7 @@ class OlympicStats(BaseTest):
         event = Event(
             name='Big Sport Blast'
         )
+        event.save()
 
         olympian_1 = Olympian(
             name='Sport Man',
@@ -228,10 +229,11 @@ class OlympicStats(BaseTest):
         )
         olympian_4.save()
 
-        response = self.client.get('api/v1/olympian_stats')
-                self.assertEqual(response.status_code, 200)
-                self.assertEqual(response.data['olympian_stats']['totl_competing_olympians'], 4)
-                self.assertEqual(response.data['olympian_stats']['average_weight']['unit'], 'kg')
-                self.assertEqual(response.data['olympian_stats']['average_weight']['male_olympians'], 150)
-                self.assertEqual(response.data['olympian_stats']['average_weight']['female_olympians'], 175)
-                self.assertEqual(response.data['olympian_stats']['average_age'], 25)
+        response = self.client.get('/api/v1/olympian_stats')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data['olympian_stats']['totl_competing_olympians'], 4)
+        self.assertEqual(response.data['olympian_stats']['average_weight']['unit'], 'kg')
+        self.assertEqual(response.data['olympian_stats']['average_weight']['male_olympians'], 150)
+        self.assertEqual(response.data['olympian_stats']['average_weight']['female_olympians'], 175)
+        self.assertEqual(response.data['olympian_stats']['average_age'], 25)

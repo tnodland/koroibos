@@ -36,3 +36,7 @@ class ListOlympiansView(generics.ListAPIView):
                 return Response(olympian)
         else:
             return self.list(request, *args, **kwargs)
+
+class ListOlympianStatsView(APIView):
+    def get(self, request):
+        'string'
