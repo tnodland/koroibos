@@ -16,7 +16,8 @@ class AllOlymipiansTest(BaseTest):
         sport.save()
 
         event = Event(
-            name='Big Sport Blast'
+            name='Big Sport Blast',
+            sport = sport
         )
         event.save()
 
@@ -78,7 +79,8 @@ class OlympianAge(BaseTest):
         sport.save()
 
         event = Event(
-            name='Big Sport Blast'
+            name='Big Sport Blast',
+            sport = sport
         )
         event.save()
 
@@ -124,7 +126,8 @@ class OlympianAge(BaseTest):
         sport.save()
 
         event = Event(
-            name='Big Sport Blast'
+            name='Big Sport Blast',
+            sport = sport
         )
         event.save()
 
@@ -171,7 +174,8 @@ class OlympicStats(BaseTest):
         sport.save()
 
         event = Event(
-            name='Big Sport Blast'
+            name='Big Sport Blast',
+            sport = sport
         )
         event.save()
 
