@@ -2,6 +2,7 @@ from rest_framework.test import APITestCase, APIClient, APIRequestFactory
 from rest_framework.views import status
 from .models import Event
 from .models import Sport
+from .models import Olympian
 
 class BaseTest(APITestCase):
     client = APIClient()
@@ -61,14 +62,14 @@ class EventMedalistTest(BaseTest):
         sport.save()
 
         event_1 = Event(
-            id=1
+            id=1,
             name='Big Sport Blast',
             sport = sport
         )
         event_1.save()
 
         event_2 = Event(
-            id=2
+            id=2,
             name='Big Sport Blast',
             sport = sport
         )
@@ -102,6 +103,20 @@ class EventMedalistTest(BaseTest):
         )
         olympian_2.save()
 
+        olympian_5 = Olympian(
+            name='Sport Man',
+            sex='M',
+            age=25,
+            height=150,
+            weight=200,
+            team='America',
+            games='2016 Summer',
+            event=event_1,
+            sport=sport,
+            medal='Bronze'
+        )
+        olympian_5.save()
+
         olympian_3 = Olympian(
             name='Sport Man',
             sex='M',
@@ -123,18 +138,49 @@ class EventMedalistTest(BaseTest):
             weight=200,
             team='America',
             games='2016 Summer',
-            event=event_1,
+            event=event_2,
             sport=sport,
             medal='Gold'
         )
         olympian_4.save()
 
+        olympian_6 = Olympian(
+            name='Sport Man',
+            sex='M',
+            age=25,
+            height=150,
+            weight=200,
+            team='America',
+            games='2016 Summer',
+            event=event_2,
+            sport=sport,
+            medal='Silver'
+        )
+        olympian_6.save()
+
+        olympian_7 = Olympian(
+            name='Sport Man',
+            sex='M',
+            age=25,
+            height=150,
+            weight=200,
+            team='America',
+            games='2016 Summer',
+            event=event_2,
+            sport=sport,
+            medal='Bronze'
+        )
+        olympian_7.save()
+
         response = self.client.get('/api/v1/events/1/medalists')
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.data), 2)
+        self.assertEqual(len(response.data['medalists']), 3)
+        self.assertEqual(response.data['medalists'][0]['medal'], 'Bronze')
+        self.assertEqual(response.data['medalists'][1]['medal'], 'Silver')
+        self.assertEqual(response.data['medalists'][2]['medal'], 'Gold')
 
         response2 = self.client.get('/api/v1/events/2/medalists')
 
         self.assertEqual(response2.status_code, 200)
-        self.assertEqual(len(response2.data), 1)
+        self.assertEqual(len(response2.data['medalists']), 3)
